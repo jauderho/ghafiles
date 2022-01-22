@@ -11,7 +11,9 @@ jobs:
     - name: Harden Runner
       uses: step-security/harden-runner@14dc64f30986eaa2ad2dddcec073f5aab18e5a24 # v1
       with:
-        egress-policy: audit
+        egress-policy: block
+        allowed-endpoints: 
+          github.com:443
 
     - name: Checkout Code
       uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2.4.0
