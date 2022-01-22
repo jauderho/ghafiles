@@ -20,7 +20,6 @@ jobs:
         egress-policy: block
         allowed-endpoints: 
           github.com:443
-          metrics.semgrep.dev:443
           semgrep.dev:443
         
     - uses: actions/checkout@629c2de402a417ea7690ca6ce3f33229e27606a5 # v2
