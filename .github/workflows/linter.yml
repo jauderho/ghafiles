@@ -1,0 +1,52 @@
+## Linter GitHub Actions ##
+name: Lint Code Base
+
+# Documentation:
+# https://help.github.com/en/articles/workflow-syntax-for-github-actions
+
+# Start the job on all push #
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions: read-all
+
+# Set the Job #
+jobs:
+  build:
+    # Name the Job
+    name: Lint Code Base
+    # Set the agent to run on
+    runs-on: ubuntu-latest
+
+    # Load all steps #
+    steps:
+      # Checkout the code base #
+      - name: Harden Runner
+        uses: step-security/harden-runner@14dc64f30986eaa2ad2dddcec073f5aab18e5a24 # v1
+        with:
+          egress-policy: audit
+          allowed-endpoints: 
+            api.github.com:443
+            github.com:443
+          
+      - name: Checkout Code
+        uses: actions/checkout@629c2de402a417ea7690ca6ce3f33229e27606a5 # v2
+        with:
+          # Full git history is needed to get a proper list of changed files within `super-linter`
+          fetch-depth: 0
+
+      # Run Linter against code base #
+      - name: Lint Code Base
+        #uses: github/super-linter@v4
+        uses: docker://ghcr.io/github/super-linter:slim-v4
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JAVASCRIPT_DEFAULT_STYLE: prettier
