@@ -20,7 +20,7 @@ jobs:
             github.com:443
 
       - name: 'Checkout Repository'
-        uses: actions/checkout@b0e28b5ac45a892f91e7d036f8200cf5ed489415
+        uses: actions/checkout@dcd71f646680f2efd8db4afa5ad64fdcba30e748
         
       - name: 'Dependency Review'
         uses: actions/dependency-review-action@3f943b86c9a289f4e632c632695e2e0898d9d67d
