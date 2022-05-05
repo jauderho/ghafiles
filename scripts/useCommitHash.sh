@@ -36,3 +36,5 @@ sed -i  \
 	-e 's/docker\/setup-qemu-action@27d0a4f181a40b142cce983c5393082c365d1480/docker\/setup-qemu-action@8b122486cedac8393e77aa9734c3528886e4a1a8/' \
 	.github/workflows/*.yml
 
+# stage the files for commit
+git add .github/workflows/*.yml
