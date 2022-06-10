@@ -1,6 +1,6 @@
 # ghafiles
 
-This forms the baseline of GH Actions that may be useful for any new project. 
+This contains baseline GitHub Actions that may be useful for any new project. 
 
 - Adhere to least privilege principles for workflow permissions
 - Use of commit hashes for pinning GitHub Actions dependencies
