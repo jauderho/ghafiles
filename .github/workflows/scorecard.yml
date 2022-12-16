@@ -6,7 +6,7 @@ on:
     # Weekly on Saturdays.
     - cron: '30 1 * * 6'
   push:
-    branches: [ main ]
+    branches: [ main, master ]
   workflow_dispatch:
 
 # Declare default permissions as read only.
@@ -19,6 +19,7 @@ jobs:
     permissions:
       # Needed to upload the results to code-scanning dashboard.
       security-events: write
+      id-token: write
       actions: read
       contents: read
 
