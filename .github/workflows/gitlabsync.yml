@@ -16,7 +16,7 @@ jobs:
     name: Git Repo Sync
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v1
+      uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2  # v2.13.2
       with:
         egress-policy: block
         disable-telemetry: true
@@ -24,11 +24,11 @@ jobs:
           github.com:443
           gitlab.com:443
         
-    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v3
+    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8  # v5.0.0
       with:
         fetch-depth: 0
         
-    - uses: jauderho/git-repo-sync@6142c9cd8960dadc57d1190506d6c35ac5cee660 # v0.2.0
+    - uses: jauderho/git-repo-sync@6142c9cd8960dadc57d1190506d6c35ac5cee660  # v0.3.0
       with:
         # Such as https://github.com/wangchucheng/git-repo-sync.git
         #target-url: ${{ secrets.GITLAB_URL }}
