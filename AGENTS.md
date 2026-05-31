@@ -133,10 +133,3 @@ Clarifying questions come **before** implementation, not after mistakes.
 
 - [ ] Assumptions stated or questions asked before implementation
 - [ ] Only changed lines required by the task
-- [ ] Typed correctly — no `any`, no untyped params
-- [ ] Edge cases identified and handled
-- [ ] `--dryrun` implemented (if applicable)
-- [ ] `--verbose` / `-v` implemented (if applicable)
-- [ ] Script header comment present (if applicable)
-- [ ] Tests written and passing
-- [ ] Signed commit ready (`git commit -S -s`)
