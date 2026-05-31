@@ -10,7 +10,7 @@ This contains baseline GitHub Actions that may be useful for any new project.
 - Use of Step Security's [Harden Runner](https://github.com/step-security/harden-runner)
 - Codespell
 - Super-Linter
-- Semgrep (SEMGREP_APP_TOKEN setup required)
+- Semgrep CE
 - (optional) Sync commits to GitLab (GITLAB_TOKEN setup required)
   - Create PAT on GitLab with API, repo read and repo write permissions
   - Add PAT into GitHub repo as a secret named GITLAB_TOKEN
