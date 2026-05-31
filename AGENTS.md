@@ -91,7 +91,7 @@ Clarifying questions come **before** implementation, not after mistakes.
 - `thiserror` for library errors; `anyhow` for binaries.
 - `clippy` (all warnings as errors) and `rustfmt` before every commit.
 - `#[must_use]` on result-returning functions where ignoring is a likely mistake.
-- Prefer `impl Trait` in arguments; use const generics and `std::sync::LazyLock` for statics.
+- Prefer `impl Trait` in arguments; use const generics and `std::sync::LazyLock` for static.
 
 ### Shell / Bash
 
