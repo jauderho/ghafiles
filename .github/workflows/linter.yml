@@ -23,6 +23,8 @@ jobs:
     name: Lint Code Base
     # Set the agent to run on
     runs-on: ubuntu-24.04
+    permissions:
+      statuses: write
 
     # Load all steps #
     steps:
