@@ -63,10 +63,3 @@ jobs:
           VALIDATE_GITLEAKS: true
           VALIDATE_CHECKOV: true
           VALIDATE_GITHUB_ACTIONS_ZIZMOR: true
-          VALIDATE_PYTHON_BLACK: false
-          VALIDATE_PYTHON_FLAKE8: false
-          VALIDATE_PYTHON_PYLINT: false
-          VALIDATE_JAVASCRIPT_ES: false
-          VALIDATE_TYPESCRIPT_ES: false
-          VALIDATE_JAVASCRIPT_PRETTIER: false
-          VALIDATE_CSS: false
