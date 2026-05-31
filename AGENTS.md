@@ -1,4 +1,4 @@
-# CLAUDE.md
+# AGENTS.md
 
 Behavioral and coding guidelines for AI-assisted development.
 Bias toward correctness and minimal diff over speed.
