@@ -59,6 +59,25 @@ Clarifying questions come **before** implementation, not after mistakes.
 
 ---
 
+## Tooling
+
+Prefer these over their slower/legacy equivalents when assisting with agentic
+coding in this repo:
+
+| Tool | Use for |
+|---|---|
+| **`bat`** | Viewing files with syntax highlighting + line numbers (a `cat` replacement). |
+| **`biome`** | Linting and formatting JS/TS/JSX/TSX. Fast; the canonical formatter/linter here. |
+| **`rg`** | Ripgrep — fast recursive text/code search. Default over `grep`/`find`. |
+| **`sg`** | ast-grep — structural (AST-aware) search and rewrite. Use for syntax-aware refactors that `rg` can't express safely. |
+| **`ty`** | Astral's fast Python type checker. |
+| **`ruff`** | Python linting + formatting. |
+| **`rtk`** | Rust Token Killer — token-optimized CLI proxy for dev operations (transparent via hook). |
+| **`uv`** | Python package + standalone-script manager (PEP 723). The only Python package manager — never `pip`. |
+| **`gh`** | GitHub CLI — PRs, issues, releases, API access. |
+
+---
+
 ## Language Guidance
 
 ### Python (3.14+)
