@@ -126,6 +126,11 @@ coding in this repo:
 
 ### Theme & Design
 
+- **[`AESTHETIC_CONTRACT.md`](AESTHETIC_CONTRACT.md) is the binding design contract for all UI work in this repo.**
+  Read it before writing or changing any UI/chart code. It fixes the palette, fonts, the HeroInsight
+  results pattern, and the Tufte chart conventions (tick contrast, direct labeling,
+  reference-line treatment, range-area bands), plus per-app token locations and a
+  compliance checklist. Where this section and the contract disagree, the contract wins.
 - **Light/dark mode toggle, defaulting to dark.**
 - Clean, minimalistic, and intuitive. Follow [Apple HCI guidelines](https://developer.apple.com/design/human-interface-guidelines/).
 - No decorative chrome. Every element earns its place.
