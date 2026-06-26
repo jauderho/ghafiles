@@ -68,6 +68,7 @@ coding in this repo:
 |---|---|
 | **`bat`** | Viewing files with syntax highlighting + line numbers (a `cat` replacement). |
 | **`biome`** | Linting and formatting JS/TS/JSX/TSX. Fast; the canonical formatter/linter here. |
+| **`bun`** | JS/TS package manager + runtime. Prioritize over `npm` for installs, scripts, and running TS. |
 | **`rg`** | Ripgrep — fast recursive text/code search. Default over `grep`/`find`. |
 | **`sg`** | ast-grep — structural (AST-aware) search and rewrite. Use for syntax-aware refactors that `rg` can't express safely. |
 | **`ty`** | Astral's fast Python type checker. |
@@ -112,13 +113,23 @@ coding in this repo:
 - `#[must_use]` on result-returning functions where ignoring is a likely mistake.
 - Prefer `impl Trait` in arguments; use const generics and `std::sync::LazyLock` for static.
 
+### TypeScript
+
+- Strict mode on. No `any` — type all props, state, and API boundaries.
+- `bun` for package management and running scripts; `biome` for lint/format.
+- React with `shadcn/ui` + Tailwind; prefer server state (React Query / SWR) over local state.
+- Recharts for data viz; colocate chart config with the component.
+- Externalize user-facing strings (i18n-ready); use locale-aware date/number formatting.
+
 ### Shell / Bash
 
 - `set -euo pipefail` at the top of every script.
+- Ensure scripts run on both Linux (priority) and macOS
 - Quote all variable expansions. No word-splitting bugs.
 - `[[ ]]` over `[ ]`. `$(...)` over backticks.
 - Color-coded output for user-facing scripts (ANSI codes; check `$NO_COLOR`).
 - `--dryrun` flag for any script that mutates state.
+- `--verbose` flag to log more detail.
 
 ---
 
@@ -147,6 +158,7 @@ coding in this repo:
 
 - Semantic HTML. ARIA labels where needed. Fully keyboard navigable.
 - Mobile-first responsive. Verify at 390 px, 768 px, and 1280 px.
+- **Cross-browser:** Layout and code must work on Chrome, Safari, and Firefox.
 - No magic numbers. Extract constants; use CSS variables / Tailwind tokens for colors and spacing.
 - Dark mode must be intentional: check contrast ratios, not just `dark:` class application.
 - **i18n-ready:** All user-facing strings must be externalized (e.g. `react-i18next`). No hardcoded copy in JSX. Use locale-aware formatting for dates, numbers, and currencies from the start.
