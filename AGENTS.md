@@ -162,6 +162,7 @@ coding in this repo:
 - No magic numbers. Extract constants; use CSS variables / Tailwind tokens for colors and spacing.
 - Dark mode must be intentional: check contrast ratios, not just `dark:` class application.
 - **i18n-ready:** All user-facing strings must be externalized (e.g. `react-i18next`). No hardcoded copy in JSX. Use locale-aware formatting for dates, numbers, and currencies from the start.
+- **Testing:** Build unit tests for components and logic; actively look for opportunities to increase test coverage.
 
 ---
 
