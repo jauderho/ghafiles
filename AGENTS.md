@@ -70,7 +70,7 @@ coding in this repo:
 | **`biome`** | Linting and formatting JS/TS/JSX/TSX. Fast; the canonical formatter/linter here. |
 | **`bun`** | JS/TS package manager + runtime. Prioritize over `npm` for installs, scripts, and running TS. |
 | **`rg`** | Ripgrep — fast recursive text/code search. Default over `grep`/`find`. |
-| **`sg`** | ast-grep — structural (AST-aware) search and rewrite. Use for syntax-aware refactors that `rg` can't express safely. |
+| **`sg`** | ast-grep — structural (AST-aware) search and rewrite. Use for syntax-aware refactors that `rg` can't express safely. Use "outline" subcommand to get quick summary and steering |
 | **`ty`** | Astral's fast Python type checker. |
 | **`ruff`** | Python linting + formatting. |
 | **`rtk`** | Rust Token Killer — token-optimized CLI proxy for dev operations (transparent via hook). |
