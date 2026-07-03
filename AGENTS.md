@@ -10,9 +10,23 @@ Bias toward correctness and minimal diff over speed.
 ### Think Before Coding
 
 - **Ultrathink.** Reason step-by-step. Consider edge cases before writing a line.
-- State assumptions explicitly. If uncertain, ask — don't guess and proceed.
+- State assumptions explicitly. For decisions only the user can make (product behavior,
+  destructive actions, scope changes), ask before implementing. For everything else,
+  state your assumption and proceed — don't stall on questions you can answer by
+  reading the code.
 - Surface tradeoffs and multiple interpretations; never pick silently.
 - If something is unclear, stop and name what's confusing.
+
+### Understand Before Changing
+
+- Read the code you're about to modify — and its callers — before editing.
+  Never edit from memory of what a file "probably" contains.
+- Search for existing helpers, patterns, and conventions before writing new ones.
+  Duplicating an existing utility is a bug.
+- Debug to root cause. Reproduce the failure first, then fix the cause, not the
+  symptom. A fix you can't explain is not a fix.
+- When evidence contradicts your hypothesis, revise the hypothesis — don't force
+  the fix through with retries or workarounds.
 
 ### Simplicity First
 
@@ -41,6 +55,33 @@ For multi-step tasks, state a brief verifiable plan before implementing:
 ```
 
 Clarifying questions come **before** implementation, not after mistakes.
+
+### Verify Before Claiming
+
+"Done" means **demonstrated working**, not "code written that should work."
+
+- Run the relevant build, tests, linter, and type checker before declaring success.
+  If you can't run them, say so explicitly — never imply verification that didn't happen.
+- Report results faithfully: failing tests get quoted output, not a summary that
+  hides them. A partial success is reported as partial.
+- **Never game the check.** Do not weaken assertions, delete failing tests, add
+  lint/type suppressions, mock away the behavior under test, or special-case the
+  test's inputs to get green. If a check seems wrong, say why and stop.
+- Distinguish failures you introduced from pre-existing ones: check whether the
+  failure exists on a clean baseline before assuming your change caused it — and
+  never "fix" a pre-existing failure by silencing it.
+- For bug fixes: write a test that reproduces the bug first, then confirm it passes
+  after the fix.
+
+### Finish the Job
+
+- Don't stop at the first plausible answer — check the edge cases against the code
+  before concluding. The second look is where wrong assumptions die.
+- If a step fails, diagnose and retry with a changed approach; don't return a
+  half-result with "you could try...". Escalate to the user only when genuinely
+  blocked on something only they can decide or provide.
+- Leave no debris: no commented-out experiments, stray debug prints, or scratch
+  files in the diff.
 
 ---
 
@@ -170,3 +211,6 @@ coding in this repo:
 
 - [ ] Assumptions stated or questions asked before implementation
 - [ ] Only changed lines required by the task
+- [ ] Build/tests/lint/type check run, with results reported honestly (or "not run" stated)
+- [ ] No suppressed warnings, weakened tests, or debug leftovers in the diff
+- [ ] git commits are signed and use SSH keys for signing
