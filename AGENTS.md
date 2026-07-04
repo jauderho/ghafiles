@@ -5,6 +5,25 @@ Bias toward correctness and minimal diff over speed.
 
 ---
 
+## Model Contract
+
+Binding rules for which models run what. Where tooling allows a choice, these are
+not suggestions.
+
+| Role | Rule |
+|---|---|
+| **Orchestrator** | **Fable Medium** if available; otherwise **Opus 4.8 High**. The orchestrator plans, decomposes, delegates, and reviews — it does not grind through bulk implementation itself. |
+| **Implementor** | Chosen **by the orchestrator, per task**. Optimize for *good over fast*. **Fable Low is the ceiling** for implementor models — never assign Fable Medium/High to implementation work. |
+| **When** | The orchestrator/implementor split is **mandatory for any complex task** (multi-step, multi-file, or requiring independent verification). Simple, single-step edits may be done directly by the orchestrator. |
+
+Implementor selection guidance: match the model to the task's difficulty — subtle
+refactors, tricky debugging, or security-sensitive code get the strongest permitted
+model (Fable Low); mechanical or well-specified changes may use a faster model
+(e.g., Sonnet or Haiku). The orchestrator reviews all delegated output before
+accepting it.
+
+---
+
 ## Core Principles
 
 ### Think Before Coding
