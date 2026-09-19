@@ -12,7 +12,7 @@ not suggestions.
 
 | Role | Rule |
 |---|---|
-| **Orchestrator** | **Fable Medium** if available; otherwise **Opus 4.8 High**. The orchestrator plans, decomposes, delegates, and reviews — it does not grind through bulk implementation itself. |
+| **Orchestrator** | **Fable Medium** if available; otherwise **Opus 5 High**. The orchestrator plans, decomposes, delegates, and reviews — it does not grind through bulk implementation itself. |
 | **Implementor** | Chosen **by the orchestrator, per task**. Optimize for *good over fast*. **Fable Low is the ceiling** for implementor models — never assign Fable Medium/High to implementation work. |
 | **When** | The orchestrator/implementor split is **mandatory for any complex task** (multi-step, multi-file, or requiring independent verification). Simple, single-step edits may be done directly by the orchestrator. |
 
@@ -21,6 +21,32 @@ refactors, tricky debugging, or security-sensitive code get the strongest permit
 model (Fable Low); mechanical or well-specified changes may use a faster model
 (e.g., Sonnet or Haiku). The orchestrator reviews all delegated output before
 accepting it.
+
+If Fable models are unavailable, Opus 5 High orchestrates and Opus 5 becomes
+the implementor ceiling; Sonnet remains the default for well-specified work.
+
+**Self-escalation:** the orchestrator may raise itself to a higher model or
+reasoning effort (e.g., Fable Medium → Fable High) when it judges the task demands
+it — deep architectural decisions, subtle concurrency or security analysis, or a
+problem that has resisted two rounds of delegation. Escalation must be deliberate:
+state the reason when escalating, and drop back once the hard part is done. The
+implementor ceiling is unaffected — escalation applies to the orchestrator seat only.
+
+### Delegation Protocol
+
+The orchestrator's leverage is in the prompt and the review — not in trusting the
+implementor.
+
+- **Write self-contained subtask prompts.** Include exact file paths, the intended
+  behavior change, hard constraints ("do not touch X"), and acceptance criteria the
+  implementor can check itself. A subtask that needs the orchestrator's conversation
+  context to make sense is under-specified.
+- **One coherent change per subtask.** If the description contains "and also", split it.
+- **Review the diff, not the report.** Implementor summaries are optimistic. Read the
+  actual changes and run the checks independently before accepting.
+- **Reject and re-delegate with a sharper prompt** rather than hand-patching bad
+  output — hand-patching hides the misunderstanding that produced it, and it will
+  recur in the next subtask.
 
 ---
 
@@ -104,6 +130,48 @@ Clarifying questions come **before** implementation, not after mistakes.
 
 ---
 
+## Judgment
+
+What separates a good run from a bad one is rarely knowledge — it is discipline at
+a handful of decision points. These are the ones that matter most.
+
+### The user's framing is a hypothesis
+
+A bug report tells you what the user observed, not what is wrong. Verify the premise
+before building on it — "the cache is stale" may mean the cache is fine and an
+invalidation call site is missing. Correcting a wrong premise early and politely is
+more useful than agreeing your way into a wrong fix. Never optimize for sounding
+agreeable over being right.
+
+### Read more than feels necessary
+
+The strongest predictor of a correct change is how much surrounding code was read
+before making it: the whole file, not the grep hit; the callers; the tests; the
+types. Ten minutes of reading beats an hour of debugging a change made on a guess.
+
+### When stuck, change mode — not intensity
+
+Two failed attempts on the same theory means the theory is wrong. Stop editing.
+Re-read the evidence, add observability (a log line, a minimal repro), and form a
+new hypothesis. Never escalate to broader rewrites, force-flags, dependency churn,
+or `sudo` because the narrow fix didn't take — escalation under confusion is how
+small bugs become incidents.
+
+### Separate observation from inference
+
+"Tests pass" only if you ran them. "Should work" is a flag, not a conclusion. When
+uncertain, say what you would check next — a calibrated "unverified on macOS" is
+worth more than confident prose. The reader must be able to tell which claims you
+demonstrated and which you believe.
+
+### Review your own diff as a hostile reviewer
+
+Before declaring done, reread the full diff cold: every hunk justified by the task,
+no drive-by edits, no leftover scaffolding, names still accurate after the change.
+More bugs are caught in this reread than by the test suite.
+
+---
+
 ## General Standards
 
 | Concern | Rule |
@@ -129,13 +197,22 @@ coding in this repo:
 | **`bat`** | Viewing files with syntax highlighting + line numbers (a `cat` replacement). |
 | **`biome`** | Linting and formatting JS/TS/JSX/TSX. Fast; the canonical formatter/linter here. |
 | **`bun`** | JS/TS package manager + runtime. Prioritize over `npm` for installs, scripts, and running TS. |
+| **`difft`** | Difftastic — AST-aware structural diff. Shows semantic code changes while ignoring formatting noise. |
+| **`fd`** | Fast, user-friendly replacement for `find`. Gitignore-aware; prefer over `find` for locating files. |
+| **`gh`** | GitHub CLI — PRs, issues, releases, API access. |
+| **`hyperfine`** | Command-line benchmarking tool. Statistically compare commands and implementations instead of relying on `time`. |
+| **`jq`** | JSON processor. Filter, transform, and query JSON from APIs and CLI tools. |
 | **`rg`** | Ripgrep — fast recursive text/code search. Default over `grep`/`find`. |
 | **`sg`** | ast-grep — structural (AST-aware) search and rewrite. Use for syntax-aware refactors that `rg` can't express safely. Use "outline" subcommand to get quick summary and steering |
-| **`ty`** | Astral's fast Python type checker. |
+| **`tokei`** | Fast source code statistics by language. Quickly summarize repository size and composition. |
+| **`ty`** | Fast Python type checker. |
 | **`ruff`** | Python linting + formatting. |
 | **`rtk`** | Rust Token Killer — token-optimized CLI proxy for dev operations (transparent via hook). |
+| **`shellcheck`** | Static analysis linter for shell scripts. Catches quoting bugs, unbound variables, and common bash pitfalls. | 
+| **`shfmt`** | Formatter for shell scripts. Enforces consistent indentation and style across bash/sh files. |
 | **`uv`** | Python package + standalone-script manager (PEP 723). The only Python package manager — never `pip`. |
-| **`gh`** | GitHub CLI — PRs, issues, releases, API access. |
+| **`xh`** | Friendly, modern replacement for `curl` for testing and exploring HTTP APIs. |
+| **`yq`** | `jq`-style processor for YAML, JSON, XML, TOML, and configuration files. Essential for GitHub Actions, Kubernetes, and Docker Compose. |
 
 ---
 
@@ -157,21 +234,23 @@ coding in this repo:
 - Leverage `match`, `TypeAlias`, `ParamSpec`, `typing.Self`, and `type X = ...` syntax.
 - `subprocess.run` with explicit `check=True`/`capture_output=True`. No `shell=True`.
 
-### Go (1.26+)
+### Go (1.27+)
 
 - `any` over `interface{}`. Use `slices`, `maps`, `cmp` stdlib packages.
-- Handle all errors explicitly. Use anonymous closures for `defer body.Close()` checks.
-- No ignored return values — code must be `errcheck`-clean.
+- Handle all errors explicitly. Use anonymous closures for `defer body.Close()` checks. No ignored return values — code must be `errcheck`-clean.
 - Flat package structure; only add layers when complexity demands it.
-- Range-over-func iterators where they simplify collection traversal.
+- Generic methods over package-level generic functions when the operation belongs to a specific type.
+- `encoding/json/v2` over `encoding/json` for new code.
+- Run `go fix` regularly to apply new modernizers; use range-over-func iterators where they simplify traversal.
 
-### Rust (1.96+)
+### Rust (1.98+)
 
 - `?` for error propagation. No `.unwrap()` in non-test code.
 - `thiserror` for library errors; `anyhow` for binaries.
 - `clippy` (all warnings as errors) and `rustfmt` before every commit.
 - `#[must_use]` on result-returning functions where ignoring is a likely mistake.
-- Prefer `impl Trait` in arguments; use const generics and `std::sync::LazyLock` for static.
+- Prefer `impl Trait` in arguments; use const generics and `std::sync::LazyLock` for statics.
+- Use let-chains and `if let` guards over nested `match`/`if` for multi-condition logic.
 
 ### TypeScript
 
@@ -233,3 +312,4 @@ coding in this repo:
 - [ ] Build/tests/lint/type check run, with results reported honestly (or "not run" stated)
 - [ ] No suppressed warnings, weakened tests, or debug leftovers in the diff
 - [ ] git commits are signed and use SSH keys for signing
+- [ ] Use concise ASD-STE100 Simplified Technical English for each commit message conveying only the most necessary information. Please remove all mannered prose
